@@ -1,4 +1,4 @@
-##Description
+## Description
 `Message-printer` microservice implemented using BCE pattern (Boundary-Controller-Entity)
 
 Http endpoints:
@@ -12,14 +12,14 @@ message example
 }
 ```
 
-##Environment Variables:
+## Environment Variables:
 `HTTP_PORT` - defaults to '3111',
 `REDIS_PORT` - defaults to '6379'
 `REDIS_HOTS` - defaults to '127.0.0.1'
 `REDIS_PASSWORD` - defaults to 'DEFAULT_SECRET'
 For local usage variables can be overwritten in file .env
 
-##Testing
+## Testing
 In order to run tests you need to have redis running locally. The easiest way is to up https://hub.docker.com/_/redis/
 locally exposing 6379 port
 ``` 
@@ -34,7 +34,7 @@ Run tests:
 npm t
 ```
 
-##Running
+## Running
 To run the service after all dependencies are installed
 ```
 npm start
