@@ -1,16 +1,14 @@
+const config = require('dotenv-extended');
 const Redis = require('ioredis');
 
-const redis = new Redis({
-    port: 6379,
-    host: '127.0.0.1',
-    password: 'DEFAULT_SECRET'
-});
+const redisConfig = {
+    port: config.REDIS_PORT,
+    host: config.REDIS_HOST,
+    password: config.REDIS_SECRET
+};
 
-const subscriber = new Redis({
-    port: 6379,
-    host: '127.0.0.1',
-    password: 'DEFAULT_SECRET'
-});
+const redis = new Redis(redisConfig);
+const subscriber = new Redis(redisConfig);
 
 module.exports = {
     subscriber,
@@ -40,7 +38,7 @@ module.exports = {
     },
 
     async pull(){
-        return await redis.brpop('messagesList', 0) // only one subscriber will receive message from list
+        return await redis.brpop('messagesList', 0) // only one subscriber will receive message
             .then(result => {
                 if (result && result[1]) {
                     return JSON.parse(result[1])

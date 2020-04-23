@@ -1,15 +1,8 @@
 const db = require('../boundaries/db/db');
-
-class ValidationError extends Error {
-    constructor(message) {
-        super(message);
-        this.name = "ValidationError";
-        this.status = 400;
-    }
-}
+const { ValidationError } = require('../../src/utils');
 
 const pushAndPublishWithTimeout = (message, ms) => {
-    setTimeout(async () => { // message will be printed when expedted
+    setTimeout(async () => { // message will be printed when expected
         await db.push(message); // push to list, all subscriber read as brpop, so only one will receive message
         await db.publish(message); // notify subscribers
     }, ms);

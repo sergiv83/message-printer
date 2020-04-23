@@ -1,4 +1,4 @@
 module.exports = {
     recursive: true,
-    timeout: 6000,
+    timeout: 10000,
 };

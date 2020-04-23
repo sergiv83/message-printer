@@ -1,3 +1,4 @@
+const config = require('dotenv-extended').load({ errorOnMissing: true});
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
 const router = require('./boundaries/router');
@@ -16,8 +17,8 @@ app.koa.on('error', (err, context) => {
     logger.error('Unexpected error happened: ', err);
 });
 
-app.server = app.koa.listen(3111); // todo: use configs from dotenv
-logger.info(`Microservice started on port: ${ 3111 }`);
+app.server = app.koa.listen(config.HTTP_PORT);
+logger.info(`Microservice started on port: ${ config.HTTP_PORT }`);
 
 app.server.on('close', () => {
     logger.info('Microservice stopped');
@@ -26,6 +27,5 @@ app.server.on('close', () => {
 (async () => {
     await messageController.processSavedMessages(); // run processing of saved messages
 });
-
 
 module.exports = app;
