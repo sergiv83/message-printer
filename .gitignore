@@ -1,0 +1,6 @@
+# npm specific
+node_modules
+
+# IDE
+.vscode/
+.idea/
