@@ -19,7 +19,7 @@ describe('MessageController', () => {
     });
 
     it('Should process saved messages in correct order', async () => {
-        const now = new Date().getTime();
+        const now = Date.now();
         const savedMessages = [
             {message: '2', timeAt: now - 200}, // second
             {message: '1', timeAt: now - 1000}, // should be first

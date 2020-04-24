@@ -18,7 +18,7 @@ describe('[HTTP] echoAtTime', () => {
     });
 
     it('Should print message', async () => {
-        const now = new Date().getTime() + 100; // todo: Date.now();
+        const now = Date.now() + 100;
         const body = { message: 'hello', timeAt: now };
 
         // act
@@ -40,8 +40,8 @@ describe('[HTTP] echoAtTime', () => {
     });
 
     it('Should print messages in correct order', async () => {
-        const timeAt = new Date().getTime() + 100; // todo: Date.now();
-        const timeAt2 = new Date().getTime() + 50; // todo: Date.now();
+        const timeAt = Date.now() + 100; // todo: Date.now();
+        const timeAt2 = Date.now() + 50; // todo: Date.now();
         const message1 = { message: 'hello3', timeAt };
         const message2 = { message: 'hello2', timeAt: timeAt2 };
 
@@ -66,7 +66,7 @@ describe('[HTTP] echoAtTime', () => {
     });
 
     it('Should not print message with `timeAt` in the past', async () => {
-        const now = new Date().getTime() - 1000; // todo: Date.now();
+        const now = Date.now() - 1000; // todo: Date.now();
         const body = { message: 'hello', timeAt: now };
         const res = await request(app.server)
             .post('/echoAtTime')

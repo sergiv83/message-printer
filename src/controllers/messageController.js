@@ -15,14 +15,14 @@ const processSavedMessages = async () => {
     filteredItems.sort((a, b) => a.timeAt - b.timeAt); // sort items by time
 
     filteredItems.forEach(message => {
-        const now = new Date().getTime();
+        const now = Date.now();
         pushAndPublishWithTimeout(message, message.timeAt - now); // if now > timeAt, all callbacks will be processed in the next cycle of event loop;
     });
 };
 
 module.exports = {
     async saveMessage(message) {
-        const now = new Date().getTime();
+        const now = Date.now();
 
         if (now > message.timeAt) {
             throw new ValidationError('timeAt should be in future');
