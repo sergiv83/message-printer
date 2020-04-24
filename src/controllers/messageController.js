@@ -7,9 +7,18 @@ const pushAndPublishWithTimeout = (message, ms) => {
         await db.publish(message); // notify subscribers
     }, ms);
 };
-
+/*
+* this would work only if single instance of publisher exists :(
+* but as a POC
+* Problem here is when message is waiting to be published in one instance
+* and other instance is restarted, it reads again messages in db,
+* and schedules it to print once more.
+*
+* As an idea here can be used SET as en intermediate step before publish
+* too prevent publishing duplicated messages,
+*/
 const processSavedMessages = async () => {
-    const keys = await db.getSavedKeys();
+    const keys = await db.getSavedKeys(); // usage of redis keys is not a good idea
     const messages = await Promise.all(keys.map((key) => db.getMessage(key)));
     const filteredItems = messages.filter(item => item !== null);
     filteredItems.sort((a, b) => a.timeAt - b.timeAt); // sort items by time
@@ -30,5 +39,5 @@ module.exports = {
         await db.saveMessage(message); // save to storage
         pushAndPublishWithTimeout(message, message.timeAt - now);
     },
-    processSavedMessages, // exported for test purposes
+    processSavedMessages,
 };
