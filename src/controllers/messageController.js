@@ -31,11 +31,16 @@ const processSavedMessages = async () => {
 
 module.exports = {
     async saveMessage(message) {
-        const now = Date.now();
+        // some small and simple validation
 
+        if (!message || !message.message || !message.timeAt) {
+            throw new ValidationError('Body should contain message and timeAt');
+        }
+        const now = Date.now();
         if (now > message.timeAt) {
             throw new ValidationError('timeAt should be in future');
         }
+
         await db.saveMessage(message); // save to storage
         pushAndPublishWithTimeout(message, message.timeAt - now);
     },

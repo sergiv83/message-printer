@@ -24,6 +24,29 @@ app.server.on('close', () => {
     logger.info('Microservice stopped');
 });
 
+const stopHandler = ({ error, exitCode, eventName }) => {
+    if (exitCode === 0) {
+        logger.info(`Microservice stopped by termination signal ${eventName}`);
+    }
+    if (error) {
+        const { message, stack } = error;
+        logger.error({ message, stack, eventName });
+    }
+    process.exit(exitCode);
+};
+
+[ 'SIGINT', 'SIGTERM', 'SIGQUIT' ].forEach(eventName => {
+    process.on(eventName, () => {
+        stopHandler({ eventName, exitCode: 0 });
+    });
+});
+
+[ 'uncaughtException', 'unhandledRejection' ].forEach(eventName => {
+    process.on(eventName, error => {
+        stopHandler({ error, eventName, exitCode: 1 });
+    });
+});
+
 (async () => {
     await messageController.processSavedMessages(); // run processing of saved messages
 });

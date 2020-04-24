@@ -2,8 +2,8 @@ const KoaRouter = require('koa-router');
 const httpBoundaries = require('./http');
 
 const routesConfig = [
-    { method: 'GET',  route: '/health-check', boundary: httpBoundaries.api,  action: 'healthCheck' },
-    { method: 'POST', route: '/echoAtTime',   boundary: httpBoundaries.echo, action: 'echoAtTime' }
+    { method: 'GET',  route: '/health-check', boundary: httpBoundaries.healthCheck,  action: 'healthCheck' },
+    { method: 'POST', route: '/echoAtTime',   boundary: httpBoundaries.echoAtTime,   action: 'echoAtTime' }
 ];
 
 const router = new KoaRouter();
