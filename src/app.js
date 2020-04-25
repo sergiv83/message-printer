@@ -49,6 +49,6 @@ const stopHandler = ({ error, exitCode, eventName }) => {
 
 (async () => {
     await messageController.processSavedMessages(); // run processing of saved messages
-});
+})();
 
 module.exports = app;
