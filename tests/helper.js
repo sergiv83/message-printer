@@ -1,5 +1,5 @@
 const app = require('../src/app');
-const db = require('../src/boundaries/db/db');
+const db = require('../src/boundaries/db');
 
 before(async () => {
     await db.clearDB();
@@ -16,5 +16,5 @@ const promiseTimeout = (ms) => {
 };
 
 module.exports = {
-    promiseTimeout,
+    promiseTimeout
 };

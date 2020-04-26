@@ -11,7 +11,20 @@ message example
     "timeAt": "1587674979826" - time in ms, should be in future 
 }
 ```
+###Note:
+The code was initially forked from https://github.com/AlexSlusarenko/message-printer.
+The algorithm however is different from the original one. This service behaves in the following way:
+1. Service receives a message to the http endpoint.
+2. It saves the message to Redis using its timestamp as a key. The value is list. So, its possible that many messages can 
+be scheduled for processing at the same time.
+3. The service also notifies all other instances about the new message timestamp via pub/sub channel.
+4. All instances receive the timestamp from the channel and schedule processing with setTimeout().
+5. When the time comes, all instances trying to obtain the lock over the list from point 2, process the messages and 
+remove the corresponding key in Redis. The instance which got the lock does the job. All others will fail their attempt
+cause there will be no key in Redis.
 
+It doesn't matter when new instances of the service appear. At startup they read all unprocessed keys (timestamps) and 
+schedule their processing. They are also subscribe to the channel to be notified about the new messages. 
 ## Environment Variables:
 `HTTP_PORT` - defaults to '3111',
 `REDIS_PORT` - defaults to '6379'
