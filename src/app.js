@@ -1,10 +1,10 @@
 const config = require('dotenv-extended').load({ errorOnMissing: true});
 const Koa = require('koa');
 const bodyParser = require('koa-bodyparser');
-const router = require('./boundaries/router');
+const router = require('./boundaries/http/router');
 const logger = require('./logger');
 const messageController = require('./controllers/messageController');
-require('./controllers/printer');
+const db = require('./boundaries/db');
 
 const app = {};
 app.koa = new Koa();
@@ -17,7 +17,7 @@ app.koa.on('error', (err, context) => {
     logger.error('Unexpected error happened: ', err);
 });
 
-app.server = app.koa.listen(config.HTTP_PORT);
+app.server = app.koa.listen(process.env.HTTP_PORT);
 logger.info(`Microservice started on port: ${ config.HTTP_PORT }`);
 
 app.server.on('close', () => {
@@ -49,6 +49,7 @@ const stopHandler = ({ error, exitCode, eventName }) => {
 
 (async () => {
     await messageController.processSavedMessages(); // run processing of saved messages
+    db.subscriber.on('message', (channel, timeAt) => messageController.processWithTimeout(timeAt)); //subscribe to messages with timestamps
 })();
 
 module.exports = app;

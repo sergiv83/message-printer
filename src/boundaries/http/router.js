@@ -1,5 +1,5 @@
 const KoaRouter = require('koa-router');
-const httpBoundaries = require('./http');
+const httpBoundaries = require('.');
 
 const routesConfig = [
     { method: 'GET',  route: '/health-check', boundary: httpBoundaries.healthCheck,  action: 'healthCheck' },

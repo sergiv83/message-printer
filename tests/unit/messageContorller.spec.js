@@ -1,5 +1,5 @@
 require('../helper');
-const db = require('../../src/boundaries/db/db');
+const db = require('../../src/boundaries/db');
 const { promiseTimeout } = require('../helper');
 const { assert } = require('chai');
 const sinon = require('sinon');
