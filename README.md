@@ -33,6 +33,7 @@ schedule their processing. They are also subscribe to the channel to be notified
 For local usage variables can be overwritten in file .env
 
 ## Testing
+### Local 
 In order to run tests you need to have redis running locally. The easiest way is to up https://hub.docker.com/_/redis/
 locally exposing 6379 port
 ``` 
@@ -46,9 +47,19 @@ Run tests:
 ```
 npm t
 ```
-
+### In Containers
+The tests can also be run inside docker containers. Just for the case if you don't want to install anything including
+Redis and right version of Node.
+```
+docker-compose up --build --abort-on-container-exit
+```
+And if you want to clean everything up after the test run use the following:
+```
+docker-compose down --rmi all
+```
 ## Running
 To run the service after all dependencies are installed
 ```
 npm start
 ```
+Node 12 or higher
